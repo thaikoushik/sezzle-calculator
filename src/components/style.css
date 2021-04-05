@@ -11,6 +11,10 @@
     flex: 1 0 auto;
 }
 
+.button.bigbutton {
+    width: 75%;
+}
+
 .button.black {
     width: 50%;
 }
@@ -39,6 +43,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1 0 auto;
+    height:45%;
   }
   
   .component-button > div {
@@ -55,9 +60,14 @@
     font-weight: 200;
     flex: 0 0 auto;
     width: 100%;
+    height:5%;
 }
 
 .display > div {
     font-size: 2.5rem;
     padding: 0.2rem 0.7rem 0.1rem 0.5rem;
+}
+
+.box-width {
+    height: 50%;
 }

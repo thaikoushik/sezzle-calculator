@@ -4,7 +4,8 @@ import Screen from "./Screen";
 import History from "./History";
 import exp from "./../logic/calculate.js";
 import "./style.css";
-
+import app from "../firebase";
+import "firebase/database";
 
 export default class App extends React.Component{
     
@@ -12,33 +13,31 @@ export default class App extends React.Component{
         super(props);
         this.state = {
             total: null,
-            next: null,
-            ops: null,
-            history: []
+            history: [],
+            expression: ''
         };
     }
     
-    async componentDidMount() {
-        this.setState({ history: await exp.getHistory() });
-      }
-
-      componentDidUpdate(prevProps){
-        if(prevProps.history !== this.props.history){
-            this.setState({          
-                history: this.props.history
+    componentDidMount() {
+        var database = app.database();
+        const dbRefPull = database.ref("/sezzle-challenge-40eec-default-rtdb").orderByChild("date").limitToLast(11);
+        dbRefPull.on('value', (snap) => {
+            const d = [];
+            snap.forEach(data => {
+                d.push(data.val());
             });
-        }
-    }
+            this.setState({history: d});
+        });
+      }
 
     handleClick = buttonName => {
         this.setState(exp.calculate(this.state, buttonName));
     };
     
     render(){
-        // console.log(exp.getHistory());
         return (
             <div className="app">
-                <Screen value={this.state.next || this.state.total || "0"} />
+                <Screen value={this.state.expression || this.state.total || "0"} />
                 <ButtonScreen clickHandler={this.handleClick} />
                 <History value={this.state.history}/>
             </div>
